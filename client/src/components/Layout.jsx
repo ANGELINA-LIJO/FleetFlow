@@ -1,0 +1,8 @@
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Activity, CarFront, LayoutDashboard, LogOut, Plus, UserRound } from 'lucide-react';
+import { clearSession, getUser } from '../services/api.js';
+export default function Layout() {
+  const navigate = useNavigate(); const user = getUser();
+  function logout() { clearSession(); navigate('/login'); }
+  return <div className="app-shell"><aside className="sidebar"><div className="brand"><span className="brand-icon"><CarFront size={23}/></span><span>Fleet<span className="brand-accent">Flow</span><small>FLEET OPERATIONS</small></span></div><div className="nav-label">WORKSPACE</div><nav><NavLink end to="/" className={({isActive})=>isActive?'nav-item active':'nav-item'}><LayoutDashboard size={18}/> Overview</NavLink><NavLink to="/vehicles/new" className={({isActive})=>isActive?'nav-item active':'nav-item'}><Plus size={18}/> Add vehicle</NavLink></nav><div className="sidebar-bottom"><div className="sidebar-note"><Activity size={16}/><span><b>Fleet health</b><small>Keep your fleet moving.</small></span></div><button className="logout-button" onClick={logout}><LogOut size={17}/> Sign out</button></div></aside><main className="main-area"><header className="topbar"><div className="crumb">Workspace <span>/</span> Fleet overview</div><div className="user-chip"><span className="avatar"><UserRound size={17}/></span><span><b>{user?.name || 'Fleet Manager'}</b><small>Fleet manager</small></span></div></header><div className="page-content"><Outlet/></div><footer className="footer">FleetFlow <span>•</span> Fleet operations made clearer</footer></main></div>;
+}
